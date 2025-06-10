@@ -5,6 +5,7 @@ from typing import Any, Dict
 import numpy as np
 from joblib import load
 import tensorflow as tf
+import os
 
 app = FastAPI()
 
@@ -18,8 +19,9 @@ app.add_middleware(
 )
 
 # Load model and scaler
-model = tf.keras.models.load_model("./model_diabetes.h5")
-scaler = load('./scaler_diabetes.joblib')  # Make sure this file exists
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+scaler = load(os.path.join(BASE_DIR, 'scaler_diabetes.joblib'))
+model = tf.keras.models.load_model(os.path.join(BASE_DIR, 'model_diabetes.h5'))
 
 class PredictionRequest(BaseModel):
     inputs: Dict[str, Any]
